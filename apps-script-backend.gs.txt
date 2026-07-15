@@ -2,59 +2,56 @@
    APPS SCRIPT BACKEND — free, no plugin, reused across all
    100+ tests. You set this up ONCE.
 
-   WHAT IT DOES
+   WHAT IT DOES (simplified)
    - Lets quiz-engine.html check "has this email already
      submitted THIS test?" before allowing a start (no retakes).
-   - Receives each finished test, logs a row to a Google Sheet,
-     and writes a formatted Google Doc into a Drive folder that
-     only you own — the test-taker never gets access to it, so
-     it's effectively non-editable by them.
-   - Optionally converts that Doc to an actual .docx file.
+   - Logs each submission (name, email, test code, score) to a
+     Google Sheet, purely as that duplicate-attempt record.
+
+   Word/text reports are now generated and downloaded directly
+   in the browser by the test-taker (see quiz-engine.html), so
+   this script no longer touches Drive or creates documents —
+   one less thing to set up, and no Drive folder needed.
 
    ============================================================
-   SETUP (about 10 minutes, once)
+   SETUP (about 5 minutes, once)
    ============================================================
    1. Go to sheets.new — create a blank Google Sheet. This will
-      be your submissions log. Copy its ID from the URL:
+      be your submissions log (used only to block retakes).
+      Copy its ID from the URL:
       https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
 
-   2. Go to drive.google.com — create a folder called e.g.
-      "Test Results". Open it, copy its ID from the URL:
-      https://drive.google.com/drive/folders/THIS_PART_HERE
-
-   3. Go to script.google.com/create — a new Apps Script project.
+   2. Go to script.google.com/create — a new Apps Script project.
       Delete the placeholder code and paste in everything below
       (from "const SHEET_ID" down to the end of the file).
 
-   4. Paste your Sheet ID and Folder ID into the two constants
-      right below this comment block.
+   3. Paste your Sheet ID into the constant right below this
+      comment block.
 
-   5. Click Deploy > New deployment > gear icon > Web app.
+   4. Click Deploy > New deployment > gear icon > Web app.
         - Execute as: Me
         - Who has access: Anyone
       Click Deploy, authorize when prompted (it'll warn you it's
       an unverified app — that's expected, it's your own script;
       click Advanced > Go to [project name] > Allow).
 
-   6. Copy the Web app URL it gives you (ends in /exec). Paste
+   5. Copy the Web app URL it gives you (ends in /exec). Paste
       that into ENGINE_CONFIG.appsScriptUrl in quiz-engine.html.
       That's the only line in the engine file you ever touch,
       and only once — every test after that reuses it.
 
-   7. Re-run "Deploy > Manage deployments" if you ever edit this
-      script later — you need to create a new version for
-      changes to take effect on the live URL.
+   6. Re-run "Deploy > Manage deployments > edit (pencil) >
+      New version > Deploy" any time you change this script —
+      editing alone doesn't update the live /exec URL.
+
+   ALREADY HAD THE OLD VERSION SET UP?
+   Just replace your script's contents with this version and
+   deploy a new version (step 6 above). You can delete your old
+   Drive results folder if you'd like — nothing writes to it
+   anymore. Your Sheet ID stays the same.
    ============================================================ */
 
 const SHEET_ID = "PASTE_YOUR_SHEET_ID_HERE";
-const FOLDER_ID = "PASTE_YOUR_FOLDER_ID_HERE";
-
-// Set to false if you'd rather keep results as Google Docs
-// instead of converting to .docx (Google Docs are just as
-// private/non-editable to test-takers, and the conversion step
-// below relies on an unofficial export endpoint that could
-// break if Google changes it — this flag is your safety valve).
-const CONVERT_TO_DOCX = true;
 
 
 function doGet(e) {
@@ -72,8 +69,7 @@ function doPost(e) {
   try {
     const payload = JSON.parse(e.postData.contents);
     logSubmission(payload);
-    const fileUrl = buildReportDoc(payload);
-    return jsonOut({ ok: true, fileUrl: fileUrl });
+    return jsonOut({ ok: true });
   } catch (err) {
     return jsonOut({ ok: false, reason: String(err) });
   }
@@ -111,55 +107,6 @@ function logSubmission(payload) {
     payload.score.possible,
     payload.autoSubmittedOnTimeout
   ]);
-}
-
-function buildReportDoc(payload) {
-  const folder = DriveApp.getFolderById(FOLDER_ID);
-  const doc = DocumentApp.create(payload.testCode + ' - ' + payload.takerName);
-  const body = doc.getBody();
-
-  body.appendParagraph(payload.testTitle).setHeading(DocumentApp.ParagraphHeading.TITLE);
-  body.appendParagraph('Name: ' + payload.takerName);
-  body.appendParagraph('Email: ' + payload.takerEmail);
-  body.appendParagraph('Test code: ' + payload.testCode);
-  body.appendParagraph('Submitted: ' + payload.submittedAt + (payload.autoSubmittedOnTimeout ? '  (auto-submitted — time ran out)' : ''));
-  if (payload.score.gradableQuestionCount > 0) {
-    body.appendParagraph('Score: ' + payload.score.earned + ' / ' + payload.score.possible);
-  }
-  body.appendHorizontalRule();
-
-  payload.answers.forEach(a => {
-    body.appendParagraph('Q' + a.number + '. ' + a.prompt).setHeading(DocumentApp.ParagraphHeading.HEADING3);
-    body.appendParagraph('Answer: ' + (a.answerGiven || '(no answer given)'));
-    if (a.type === 'mc') {
-      body.appendParagraph((a.correct ? 'Correct' : 'Incorrect') + ' — correct answer: ' + a.correctAnswer);
-    } else {
-      body.appendParagraph('(free-text answer — review manually)');
-    }
-  });
-
-  doc.saveAndClose();
-  const docFile = DriveApp.getFileById(doc.getId());
-
-  if (!CONVERT_TO_DOCX) {
-    docFile.moveTo(folder);
-    return docFile.getUrl();
-  }
-
-  try {
-    const url = 'https://docs.google.com/feeds/download/documents/export/Export?id=' + doc.getId() + '&exportFormat=docx';
-    const token = ScriptApp.getOAuthToken();
-    const response = UrlFetchApp.fetch(url, { headers: { Authorization: 'Bearer ' + token } });
-    const docxBlob = response.getBlob().setName(payload.testCode + ' - ' + payload.takerName + '.docx');
-    const docxFile = folder.createFile(docxBlob);
-    docFile.setTrashed(true); // remove the intermediate Google Doc, keep only the .docx
-    return docxFile.getUrl();
-  } catch (err) {
-    // Conversion failed (e.g. Google changed the export endpoint) —
-    // fall back to keeping the Google Doc so nothing is lost.
-    docFile.moveTo(folder);
-    return docFile.getUrl();
-  }
 }
 
 function jsonOut(obj) {
