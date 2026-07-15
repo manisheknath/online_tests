@@ -7,14 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-
-/* ============================================================
-   ⚙️  CONFIG LIVES IN THE <script> BLOCK NEAR THE BOTTOM.
-   Everything above the "STOP EDITING HERE" line in the script
-   is content/config you change per test. Everything below it
-   is the engine — you shouldn't need to touch it.
-   ============================================================ */
-
 :root{
   --ink:        #1C2E3A;
   --ink-soft:   #435363;
@@ -28,13 +20,11 @@
   --sans: 'IBM Plex Sans', system-ui, sans-serif;
   --serif: 'Fraunces', Georgia, serif;
 }
-
 *{ box-sizing: border-box; }
 html,body{ margin:0; padding:0; }
 body{
   background: var(--paper);
-  background-image:
-    linear-gradient(var(--paper-line) 1px, transparent 1px);
+  background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
   background-size: 100% 32px;
   font-family: var(--sans);
   color: var(--ink);
@@ -58,219 +48,78 @@ body{
   color: var(--ink-soft);
   padding: 18px 32px 0;
 }
-header.masthead{
-  padding: 6px 32px 24px;
-  border-bottom: 1px solid var(--paper-line);
-}
-header.masthead h1{
-  font-family: var(--serif);
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 1.15;
-  margin: 4px 0 10px;
-}
-header.masthead p{
-  color: var(--ink-soft);
-  font-size: 15px;
-  line-height: 1.5;
-  margin: 0;
-}
+header.masthead{ padding: 6px 32px 24px; border-bottom: 1px solid var(--paper-line); }
+header.masthead h1{ font-family: var(--serif); font-weight: 600; font-size: 32px; line-height: 1.15; margin: 4px 0 10px; }
+header.masthead p{ color: var(--ink-soft); font-size: 15px; line-height: 1.5; margin: 0; }
 .meta-row{
-  display:flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--paper-line);
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--ink-soft);
+  display:flex; gap: 24px; flex-wrap: wrap;
+  padding: 16px 32px; border-bottom: 1px solid var(--paper-line);
+  font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
 }
 .meta-row b{ color: var(--ink); font-weight: 600; }
-
-/* ---- Timer, the signature element ---- */
 .timer-bar{
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: var(--card);
-  border-bottom: 1px solid var(--paper-line);
+  position: sticky; top: 0; z-index: 5;
+  background: var(--card); border-bottom: 1px solid var(--paper-line);
   padding: 14px 32px;
 }
-.timer-row{
-  display:flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.timer-label{
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-.timer-clock{
-  font-family: var(--serif);
-  font-variant-numeric: tabular-nums;
-  font-size: 30px;
-  font-weight: 600;
-  color: var(--ink);
-  transition: color 0.4s ease;
-}
+.timer-row{ display:flex; align-items: baseline; justify-content: space-between; }
+.timer-label{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.timer-clock{ font-family: var(--serif); font-variant-numeric: tabular-nums; font-size: 30px; font-weight: 600; color: var(--ink); transition: color 0.4s ease; }
 .timer-clock.warn{ color: var(--accent-warn); }
 .timer-clock.alert{ color: var(--accent-alert); animation: pulse 1s infinite; }
 @keyframes pulse{ 50%{ opacity: 0.45; } }
-.timer-track{
-  margin-top: 10px;
-  height: 3px;
-  background: var(--paper-line);
-  overflow: hidden;
-}
-.timer-fill{
-  height: 100%;
-  background: var(--accent-calm);
-  width: 100%;
-  transition: width 1s linear, background 0.4s ease;
-}
+.timer-track{ margin-top: 10px; height: 3px; background: var(--paper-line); overflow: hidden; }
+.timer-fill{ height: 100%; background: var(--accent-calm); width: 100%; transition: width 1s linear, background 0.4s ease; }
 .timer-fill.warn{ background: var(--accent-warn); }
 .timer-fill.alert{ background: var(--accent-alert); }
-
-/* ---- Screens ---- */
 .screen{ padding: 32px; }
 .screen[hidden]{ display:none; }
-
 .field{ margin-bottom: 22px; }
-.field label{
-  display:block;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 8px;
-}
+.field label{ display:block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
 .field input[type=text], .field input[type=email], .field textarea{
-  width:100%;
-  border: 1px solid var(--paper-line);
-  background: var(--paper);
-  padding: 11px 12px;
-  font-family: var(--sans);
-  font-size: 15px;
-  color: var(--ink);
+  width:100%; border: 1px solid var(--paper-line); background: var(--paper);
+  padding: 11px 12px; font-family: var(--sans); font-size: 15px; color: var(--ink);
+  user-select: text;
 }
 .field textarea{ min-height: 84px; resize: vertical; }
-.field input:focus, .field textarea:focus{
-  outline: 2px solid var(--ink);
-  outline-offset: 1px;
-}
-
+.field input:focus, .field textarea:focus{ outline: 2px solid var(--ink); outline-offset: 1px; }
 button.primary{
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: var(--ink);
-  color: var(--paper);
-  border: none;
-  padding: 14px 24px;
-  cursor: pointer;
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--ink); color: var(--paper); border: none; padding: 14px 24px; cursor: pointer;
 }
 button.primary:hover{ background: var(--ink-soft); }
 button.primary:disabled{ background: var(--paper-line); color: var(--ink-soft); cursor: not-allowed; }
 button.ghost{
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: transparent;
-  color: var(--ink-soft);
-  border: 1px solid var(--paper-line);
-  padding: 10px 16px;
-  cursor: pointer;
-  margin-left: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+  background: transparent; color: var(--ink-soft); border: 1px solid var(--paper-line);
+  padding: 10px 16px; cursor: pointer; margin-left: 10px;
 }
 button.ghost:hover{ border-color: var(--ink-soft); color: var(--ink); }
-
 .notice{
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 14px 16px;
-  border-left: 3px solid var(--accent-alert);
-  background: #FBEEEC;
-  color: #7A2E27;
-  margin-bottom: 20px;
+  font-size: 14px; line-height: 1.5; padding: 14px 16px;
+  border-left: 3px solid var(--accent-alert); background: #FBEEEC; color: #7A2E27; margin-bottom: 20px;
 }
-
-/* ---- Questions ---- */
-.question{
-  padding: 24px 0;
-  border-bottom: 1px solid var(--paper-line);
-}
+.notice.info{ border-left-color: var(--ink-soft); background: var(--paper); color: var(--ink-soft); }
+.question{ padding: 24px 0; border-bottom: 1px solid var(--paper-line); user-select: none; }
 .question:first-of-type{ padding-top: 0; }
 .question:last-of-type{ border-bottom: none; }
-.q-number{
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--ink-soft);
-  letter-spacing: 0.06em;
-}
-.q-prompt{
-  font-family: var(--serif);
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1.4;
-  margin: 6px 0 16px;
-}
+.q-number{ font-family: var(--mono); font-size: 12px; color: var(--ink-soft); letter-spacing: 0.06em; }
+.q-prompt{ font-family: var(--serif); font-size: 19px; font-weight: 500; line-height: 1.4; margin: 6px 0 16px; }
 .q-points{ color: var(--ink-soft); font-weight: 400; font-size: 14px; }
-.option{
-  display:flex;
-  align-items:flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--paper-line);
-  margin-bottom: 8px;
-  cursor: pointer;
-  font-size: 15px;
-}
+.option{ display:flex; align-items:flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--paper-line); margin-bottom: 8px; cursor: pointer; font-size: 15px; }
 .option:hover{ border-color: var(--ink-soft); }
 .option input{ margin-top: 3px; }
 .option.selected{ border-color: var(--ink); background: var(--paper); }
-
-/* ---- Results ---- */
-.score-block{
-  text-align:center;
-  padding: 28px 0 8px;
-}
-.score-num{
-  font-family: var(--serif);
-  font-size: 56px;
-  font-weight: 600;
-}
-.score-label{
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
+.score-block{ text-align:center; padding: 28px 0 8px; }
+.score-num{ font-family: var(--serif); font-size: 56px; font-weight: 600; }
+.score-label{ font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
 .review-item{ padding: 16px 0; border-bottom: 1px solid var(--paper-line); }
-.review-item .tag{
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  display: inline-block;
-  margin-bottom: 8px;
-}
+.review-item .tag{ font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; display: inline-block; margin-bottom: 8px; }
 .tag.correct{ background: #E7F0EA; color: var(--accent-calm); }
 .tag.incorrect{ background: #FBEEEC; color: var(--accent-alert); }
 .tag.ungraded{ background: var(--paper); color: var(--ink-soft); }
-
-footer.actions{
-  display:flex;
-  justify-content: flex-end;
-  padding: 20px 32px 28px;
-}
+.sync-status{ font-family: var(--mono); font-size: 12px; color: var(--ink-soft); text-align:center; padding: 8px 0 0; }
+footer.actions{ display:flex; justify-content: flex-end; padding: 20px 32px 28px; }
 </style>
 </head>
 <body>
@@ -287,17 +136,21 @@ footer.actions{
     <span>Questions: <b id="metaQCount">—</b></span>
   </div>
 
-  <!-- SCREEN 1: START -->
   <section class="screen" id="screenStart">
     <div class="field">
       <label for="takerName">Your name</label>
       <input type="text" id="takerName" placeholder="e.g. Jordan Lee">
     </div>
+    <div class="field">
+      <label for="takerEmail">Your email</label>
+      <input type="email" id="takerEmail" placeholder="e.g. jordan@email.com">
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:6px;">Used only to stop duplicate attempts and to label your result.</div>
+    </div>
     <p id="closedNotice" class="notice" hidden>This test's deadline has passed. It can no longer be started.</p>
+    <p id="retakeNotice" class="notice" hidden>Our records show this email has already submitted this test. Contact your test administrator if you think this is a mistake.</p>
     <button class="primary" id="btnStart">Start test</button>
   </section>
 
-  <!-- SCREEN 2: QUIZ -->
   <section class="screen" id="screenQuiz" hidden>
     <div class="timer-bar">
       <div class="timer-row">
@@ -312,63 +165,35 @@ footer.actions{
     </footer>
   </section>
 
-  <!-- SCREEN 3: RESULTS -->
   <section class="screen" id="screenResults" hidden>
     <div id="scoreBlock"></div>
     <div id="reviewMount"></div>
+    <div class="sync-status" id="syncStatus"></div>
     <footer class="actions" style="padding:24px 0 0;">
       <button class="ghost" id="btnDownload">Download results (.json)</button>
     </footer>
   </section>
 </div>
 
+<!-- ============================================================
+     Loads the per-test config from a sibling file. This is the
+     ONLY file you swap out to run a different test. Keep this
+     quiz-engine.html file identical across all your tests.
+     ============================================================ -->
+<script src="questions.js"></script>
+
 <script>
 /* ============================================================
-   1. TEST CONFIG — edit this block for every new test.
-      This is the only section you should need to touch.
+   ONE-TIME SETUP — set this once, reused by every test.
+   Paste in the /exec URL you get after deploying the Apps
+   Script backend (see apps-script-backend.gs.txt for the code
+   and setup steps).
    ============================================================ */
-const TEST_CONFIG = {
-
-  // A short code to tell tests apart at a glance, e.g. "TEST 014"
-  testCode: "TEST 001",
-
-  title: "Sample Knowledge Check",
-  intro: "Answer every question before time runs out. Your answers submit automatically when the clock hits zero.",
-
-  // How long the taker gets once they hit "Start test", in minutes.
-  timeLimitMinutes: 15,
-
-  // Hard deadline — nobody can START the test after this moment.
-  // Format: "YYYY-MM-DDTHH:MM:SS" in the taker's local time.
-  deadline: "2026-12-31T23:59:59",
-
-  // Questions: type "mc" (multiple choice, auto-graded) or
-  // "short" (free-text, ungraded — shown to you for manual review).
-  questions: [
-    {
-      type: "mc",
-      prompt: "Which planet is closest to the sun?",
-      points: 1,
-      options: ["Venus", "Mercury", "Earth", "Mars"],
-      correctIndex: 1
-    },
-    {
-      type: "mc",
-      prompt: "What is 12 × 8?",
-      points: 1,
-      options: ["96", "84", "108", "88"],
-      correctIndex: 0
-    },
-    {
-      type: "short",
-      prompt: "In two or three sentences, explain why the sky appears blue.",
-      points: 2
-    }
-  ]
+const ENGINE_CONFIG = {
+  appsScriptUrl: "PASTE_YOUR_WEB_APP_URL_HERE"
 };
 /* ============================================================
-   STOP EDITING HERE — engine below. See notes at the very
-   bottom of this file for how retakes/collection are handled.
+   ENGINE — you shouldn't need to edit anything below this line.
    ============================================================ */
 
 const els = {
@@ -382,7 +207,9 @@ const els = {
   screenQuiz: document.getElementById('screenQuiz'),
   screenResults: document.getElementById('screenResults'),
   takerName: document.getElementById('takerName'),
+  takerEmail: document.getElementById('takerEmail'),
   closedNotice: document.getElementById('closedNotice'),
+  retakeNotice: document.getElementById('retakeNotice'),
   btnStart: document.getElementById('btnStart'),
   timerClock: document.getElementById('timerClock'),
   timerFill: document.getElementById('timerFill'),
@@ -390,6 +217,7 @@ const els = {
   btnSubmit: document.getElementById('btnSubmit'),
   scoreBlock: document.getElementById('scoreBlock'),
   reviewMount: document.getElementById('reviewMount'),
+  syncStatus: document.getElementById('syncStatus'),
   btnDownload: document.getElementById('btnDownload'),
 };
 
@@ -399,12 +227,27 @@ let totalSeconds = 0;
 let answers = [];
 let resultsPayload = null;
 
+function pad(n){ return String(n).padStart(2,'0'); }
 function fmtDeadline(iso){
   const d = new Date(iso);
   return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 }
-function pad(n){ return String(n).padStart(2,'0'); }
+function backendConfigured(){
+  return ENGINE_CONFIG.appsScriptUrl && !ENGINE_CONFIG.appsScriptUrl.includes('PASTE_YOUR');
+}
 
+/* ---------- Anti copy/paste (deterrent, not foolproof) ---------- */
+['copy','cut','paste','contextmenu'].forEach(evt => {
+  document.addEventListener(evt, e => e.preventDefault());
+});
+document.addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  const blockedCombo = (e.ctrlKey || e.metaKey) && ['c','v','x','u','s','p'].includes(k);
+  const devtools = k === 'f12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].includes(k));
+  if (blockedCombo || devtools) e.preventDefault();
+});
+
+/* ---------- Static info ---------- */
 function renderStaticInfo(){
   els.eyebrow.textContent = TEST_CONFIG.testCode;
   els.title.textContent = TEST_CONFIG.title;
@@ -413,31 +256,42 @@ function renderStaticInfo(){
   els.metaDeadline.textContent = fmtDeadline(TEST_CONFIG.deadline);
   els.metaQCount.textContent = TEST_CONFIG.questions.length;
   document.title = TEST_CONFIG.title;
-
   if (new Date() > new Date(TEST_CONFIG.deadline)) {
     els.closedNotice.hidden = false;
     els.btnStart.disabled = true;
   }
 }
 
+/* ---------- Retake check ---------- */
+async function checkAlreadySubmitted(email){
+  if (!backendConfigured()) return false;
+  try{
+    const url = ENGINE_CONFIG.appsScriptUrl + '?action=check'
+      + '&email=' + encodeURIComponent(email)
+      + '&testCode=' + encodeURIComponent(TEST_CONFIG.testCode);
+    const res = await fetch(url);
+    const data = await res.json();
+    return !!data.alreadySubmitted;
+  }catch(err){
+    return false; // if the check fails, we fail open rather than blocking a legitimate taker
+  }
+}
+
+/* ---------- Questions ---------- */
 function buildQuestions(){
   els.questionsMount.innerHTML = "";
   answers = TEST_CONFIG.questions.map(() => null);
-
   TEST_CONFIG.questions.forEach((q, i) => {
     const wrap = document.createElement('div');
     wrap.className = 'question';
-
     const num = document.createElement('div');
     num.className = 'q-number';
     num.textContent = 'Q' + pad(i+1);
     wrap.appendChild(num);
-
     const prompt = document.createElement('div');
     prompt.className = 'q-prompt';
     prompt.innerHTML = q.prompt + ' <span class="q-points">(' + q.points + (q.points===1?' pt':' pts') + ')</span>';
     wrap.appendChild(prompt);
-
     if (q.type === 'mc') {
       q.options.forEach((opt, oi) => {
         const label = document.createElement('label');
@@ -456,11 +310,11 @@ function buildQuestions(){
       ta.addEventListener('input', () => { answers[i] = ta.value; });
       wrap.appendChild(ta);
     }
-
     els.questionsMount.appendChild(wrap);
   });
 }
 
+/* ---------- Timer / start / submit ---------- */
 function startTest(){
   const timeLimitMs = TEST_CONFIG.timeLimitMinutes * 60 * 1000;
   const personalDeadline = Date.now() + timeLimitMs;
@@ -488,18 +342,14 @@ function updateClock(remaining, startSeconds){
   const m = Math.floor(remaining / 60);
   const s = remaining % 60;
   els.timerClock.textContent = pad(m) + ':' + pad(s);
-
   const pct = startSeconds > 0 ? (remaining / startSeconds) * 100 : 0;
   els.timerFill.style.width = pct + '%';
-
   els.timerClock.classList.remove('warn','alert');
   els.timerFill.classList.remove('warn','alert');
   if (remaining <= 30) {
-    els.timerClock.classList.add('alert');
-    els.timerFill.classList.add('alert');
+    els.timerClock.classList.add('alert'); els.timerFill.classList.add('alert');
   } else if (remaining <= startSeconds * 0.2) {
-    els.timerClock.classList.add('warn');
-    els.timerFill.classList.add('warn');
+    els.timerClock.classList.add('warn'); els.timerFill.classList.add('warn');
   }
 }
 
@@ -514,22 +364,17 @@ function gradeAndBuildResults(autoSubmitted){
       gradedQuestions++;
     }
     return {
-      number: i+1,
-      type: q.type,
-      prompt: q.prompt,
-      points: q.points,
-      answerGiven: q.type === 'mc'
-        ? (answers[i] === null ? null : q.options[answers[i]])
-        : (answers[i] || ""),
+      number: i+1, type: q.type, prompt: q.prompt, points: q.points,
+      answerGiven: q.type === 'mc' ? (answers[i] === null ? null : q.options[answers[i]]) : (answers[i] || ""),
       correctAnswer: q.type === 'mc' ? q.options[q.correctIndex] : null,
       correct
     };
   });
-
   return {
     testCode: TEST_CONFIG.testCode,
     testTitle: TEST_CONFIG.title,
     takerName: els.takerName.value || "(name not entered)",
+    takerEmail: els.takerEmail.value || "(email not entered)",
     submittedAt: new Date().toISOString(),
     autoSubmittedOnTimeout: autoSubmitted,
     score: { earned, possible, gradableQuestionCount: gradedQuestions },
@@ -540,18 +385,12 @@ function gradeAndBuildResults(autoSubmitted){
 function renderResults(payload){
   els.screenQuiz.hidden = true;
   els.screenResults.hidden = false;
-
   const hasGraded = payload.score.gradableQuestionCount > 0;
   els.scoreBlock.innerHTML = hasGraded
-    ? `<div class="score-block">
-         <div class="score-num">${payload.score.earned} / ${payload.score.possible}</div>
-         <div class="score-label">Auto-graded score${payload.autoSubmittedOnTimeout ? ' · time expired' : ''}</div>
-       </div>`
-    : `<div class="score-block">
-         <div class="score-num">Submitted</div>
-         <div class="score-label">This test has free-text answers to review manually</div>
-       </div>`;
-
+    ? `<div class="score-block"><div class="score-num">${payload.score.earned} / ${payload.score.possible}</div>
+       <div class="score-label">Auto-graded score${payload.autoSubmittedOnTimeout ? ' · time expired' : ''}</div></div>`
+    : `<div class="score-block"><div class="score-num">Submitted</div>
+       <div class="score-label">This test has free-text answers to review manually</div></div>`;
   els.reviewMount.innerHTML = "";
   payload.answers.forEach(a => {
     const item = document.createElement('div');
@@ -562,8 +401,7 @@ function renderResults(payload){
         ? '<span class="tag correct">Q' + pad(a.number) + ' · correct</span>'
         : '<span class="tag incorrect">Q' + pad(a.number) + ' · incorrect</span>';
     }
-    item.innerHTML = `
-      ${tag}
+    item.innerHTML = `${tag}
       <div class="q-prompt" style="font-size:16px;">${a.prompt}</div>
       <div style="font-size:14px;color:var(--ink-soft);">
         Answer given: ${a.answerGiven ? a.answerGiven : '<em>no answer</em>'}
@@ -573,13 +411,50 @@ function renderResults(payload){
   });
 }
 
-function submitTest(autoSubmitted){
+async function sendToBackend(payload){
+  if (!backendConfigured()) return { ok:false, reason: 'not_configured' };
+  try{
+    const res = await fetch(ENGINE_CONFIG.appsScriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight
+      body: JSON.stringify(payload)
+    });
+    return await res.json();
+  }catch(err){
+    return { ok:false, reason: 'network' };
+  }
+}
+
+async function submitTest(autoSubmitted){
   if (timerInterval) clearInterval(timerInterval);
   resultsPayload = gradeAndBuildResults(!!autoSubmitted);
   renderResults(resultsPayload);
+  els.syncStatus.textContent = "Saving your result…";
+  const result = await sendToBackend(resultsPayload);
+  els.syncStatus.textContent = result.ok
+    ? "Result saved. You're all set."
+    : "Couldn't confirm your result was saved automatically — please also click \"Download results\" below and send it to your test administrator.";
 }
 
-els.btnStart.addEventListener('click', startTest);
+els.btnStart.addEventListener('click', async () => {
+  const name = els.takerName.value.trim();
+  const email = els.takerEmail.value.trim();
+  if (!name || !email) {
+    alert('Please enter your name and email before starting.');
+    return;
+  }
+  els.btnStart.disabled = true;
+  els.btnStart.textContent = 'CHECKING…';
+  const already = await checkAlreadySubmitted(email);
+  if (already) {
+    els.retakeNotice.hidden = false;
+    els.btnStart.textContent = 'START TEST';
+    return; // stays disabled — no retake
+  }
+  els.btnStart.textContent = 'START TEST';
+  startTest();
+});
+
 els.btnSubmit.addEventListener('click', () => submitTest(false));
 
 els.btnDownload.addEventListener('click', () => {
@@ -594,37 +469,6 @@ els.btnDownload.addEventListener('click', () => {
 });
 
 renderStaticInfo();
-
-/* ============================================================
-   NOTES FOR YOU (not shown to test-takers):
-
-   • DUPLICATING FOR A NEW TEST
-     Copy this file, rename it (e.g. test-002-history.html),
-     open the copy, and edit only the TEST_CONFIG block above.
-     Nothing else needs to change.
-
-   • COLLECTING RESULTS
-     There's no server here, so results aren't sent anywhere
-     automatically. After submitting, the taker sees their score
-     and can click "Download results" to save a .json file they
-     send back to you (email, WhatsApp, whatever). If you want
-     results to land somewhere automatically across 100+ tests,
-     the cleanest free option is pointing this at a Google Form
-     as a silent backend — happy to wire that up if useful.
-
-   • PREVENTING RETAKES
-     This template doesn't block a second attempt on the same
-     device — there's no account system to enforce it. For a
-     trusted friend that's rarely an issue. If you need it
-     enforced, that also needs the Google Form (or similar)
-     backend so you can check "has this person already
-     submitted?" before letting them start.
-
-   • HOSTING
-     Works opening the file directly, or hosted for free on
-     GitHub Pages, Netlify, Vercel, or Google Sites — anywhere
-     that serves a static HTML file.
-   ============================================================ */
 </script>
 </body>
 </html>
