@@ -14,7 +14,7 @@ const TEST_CONFIG = {
 
   timeLimitMinutes: 10,
 
-  deadline: "2026-6-31T23:59:59",
+  deadline: "2026-6-25T23:59:59",
 
   questions: [
 
