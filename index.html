@@ -445,11 +445,25 @@ async function submitTest(autoSubmitted){
   if (timerInterval) clearInterval(timerInterval);
   resultsPayload = gradeAndBuildResults(!!autoSubmitted);
   renderResults(resultsPayload);
+
   els.syncStatus.textContent = "Recording submission…";
   const result = await sendToBackend(resultsPayload);
-  els.syncStatus.textContent = result.ok
-    ? "Submission recorded. Download your report below and send it to your test administrator."
-    : "Couldn't reach the server to record this submission (this only affects duplicate-attempt checking) — please still download your report below and send it to your test administrator.";
+
+  // Auto-download the report immediately on every submission (both
+  // manual and timeout) so nothing depends on the taker remembering
+  // to click a button. The buttons stay available as a backup/re-download.
+  let downloadedOk = true;
+  try{
+    downloadBlob(buildReportHtml(resultsPayload), 'application/msword', 'doc');
+  }catch(err){
+    downloadedOk = false;
+  }
+
+  const recordedMsg = result.ok ? "Submission recorded." : "Couldn't reach the server to record this submission (only affects duplicate-attempt checking).";
+  const downloadMsg = downloadedOk
+    ? "Your report has downloaded automatically — check your downloads folder."
+    : "Automatic download didn't start — please use a button below.";
+  els.syncStatus.textContent = recordedMsg + " " + downloadMsg + " Send the file to your test administrator.";
 }
 
 els.btnStart.addEventListener('click', async () => {
