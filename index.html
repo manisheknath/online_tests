@@ -267,10 +267,26 @@ function renderStaticInfo(){
   els.title.textContent = TEST_CONFIG.title;
   els.intro.textContent = TEST_CONFIG.intro;
   els.metaTimeLimit.textContent = TEST_CONFIG.timeLimitMinutes + " min";
-  els.metaDeadline.textContent = fmtDeadline(TEST_CONFIG.deadline);
   els.metaQCount.textContent = TEST_CONFIG.questions.length;
   document.title = TEST_CONFIG.title;
-  if (new Date() > new Date(TEST_CONFIG.deadline)) {
+
+  const deadlineMs = new Date(TEST_CONFIG.deadline).getTime();
+  const deadlineIsValid = !isNaN(deadlineMs);
+
+  if (!deadlineIsValid) {
+    // Fail CLOSED, not open: an unparseable deadline must never
+    // silently let everyone in. Month/day need leading zeros,
+    // e.g. "2026-06-25T23:59:59", not "2026-6-25T23:59:59".
+    els.metaDeadline.textContent = "invalid date — test blocked";
+    els.closedNotice.textContent = 'The deadline in questions.js ("' + TEST_CONFIG.deadline + '") isn\'t a valid date format, so this test is blocked until it\'s fixed. Use YYYY-MM-DD with leading zeros, e.g. 2026-06-25T23:59:59.';
+    els.closedNotice.hidden = false;
+    els.btnStart.disabled = true;
+    return;
+  }
+
+  els.metaDeadline.textContent = fmtDeadline(TEST_CONFIG.deadline);
+  if (new Date() > new Date(deadlineMs)) {
+    els.closedNotice.textContent = "This test's deadline has passed. It can no longer be started.";
     els.closedNotice.hidden = false;
     els.btnStart.disabled = true;
   }
@@ -388,6 +404,7 @@ function gradeAndBuildResults(autoSubmitted){
   return {
     testCode: TEST_CONFIG.testCode,
     testTitle: TEST_CONFIG.title,
+    testDeadline: TEST_CONFIG.deadline,
     takerName: els.takerName.value || "(name not entered)",
     takerEmail: els.takerEmail.value || "(email not entered)",
     submittedAt: new Date().toISOString(),
@@ -516,7 +533,8 @@ function buildReportHtml(payload){
   <p>
     <b>Name:</b> ${escapeHtml(payload.takerName)}<br>
     <b>Email:</b> ${escapeHtml(payload.takerEmail)}<br>
-    <b>Submitted:</b> ${new Date(payload.submittedAt).toLocaleString()}${payload.autoSubmittedOnTimeout ? ' (auto-submitted — time ran out)' : ''}
+    <b>Submitted:</b> ${new Date(payload.submittedAt).toLocaleString()}${payload.autoSubmittedOnTimeout ? ' (auto-submitted — time ran out)' : ''}<br>
+    <b>Test deadline:</b> ${fmtDeadline(payload.testDeadline)}
   </p>
   ${payload.score.gradableQuestionCount > 0 ? `<p><b>Score:</b> ${payload.score.earned} / ${payload.score.possible}</p>` : ''}
   <hr>
@@ -532,6 +550,7 @@ function buildReportText(payload){
   lines.push('Name: ' + payload.takerName);
   lines.push('Email: ' + payload.takerEmail);
   lines.push('Submitted: ' + new Date(payload.submittedAt).toLocaleString() + (payload.autoSubmittedOnTimeout ? ' (auto-submitted — time ran out)' : ''));
+  lines.push('Test deadline: ' + fmtDeadline(payload.testDeadline));
   if (payload.score.gradableQuestionCount > 0) {
     lines.push('Score: ' + payload.score.earned + ' / ' + payload.score.possible);
   }
