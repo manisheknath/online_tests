@@ -16,8 +16,8 @@ const TEST_CONFIG = {
   timeLimitMinutes: 60,
 
   // Set these before this test goes out — see the format guide.
-  startDate: "2026-07-20T09:00:00",
-  deadline: "2026-07-27T23:59:59",
+  startDate: "2026-07-19T15:00:00",
+  deadline: "2026-07-19T16:00:00",
 
   // No reading passages here, so unlike the language tests, it's
   // safe to turn shuffleQuestions on for this one if you want to —
